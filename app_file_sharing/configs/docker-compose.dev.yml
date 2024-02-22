@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+    database:
+        env_file:
+            - .env.dev
+
+    backend:
+        build:
+            target: dev
+        ports:
+            - '5000:5000'
+        env_file:
+            - .env.dev
+
+    frontend:
+        build:
+            target: dev
+        env_file:
+            - .env.dev
+        volumes:
+            - ./frontend:/frontend:rw
+
+    nginx:
+        build:
+            target: dev
+        env_file:
+            - .env.dev
+        ports:
+            - 80:80
+
+    pgadmin:
+        tty: true
+        image: dpage/pgadmin4
+        ports:
+            - 333:80
+        volumes:
+            - './configs/pgadmin-servers.json:/pgadmin4/servers.json:ro'
+        env_file:
+            - .env.dev

@@ -1,0 +1,32 @@
+version: '3.8'
+
+
+services:
+    database:
+        image: postgres:16.1-alpine3.19
+        ports:
+            - 5432:5432
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+
+    backend:
+        restart: always
+        tty: true
+        build:
+            context: ./backend
+        volumes:
+            - ./backend:/backend
+        links:
+            - database
+
+    frontend:
+        tty: true
+        build:
+            context: ./frontend
+
+    nginx:
+        build:
+            context: ./nginx
+        links:
+            - backend
+            - frontend

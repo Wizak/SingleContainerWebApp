@@ -1,0 +1,20 @@
+version: '3.8'
+
+
+services:
+    app_file_sharing:
+        restart: always
+        tty: true
+        build:
+            context: ./app_file_sharing
+        ports:
+            - 80:80
+            - 443:443
+            - 3000:3000
+            - 5000:5000
+            - 5432:5432
+        privileged: true
+        volumes:
+            - ./app_file_sharing:/app_file_sharing
+            - ./app_file_sharing/postgres-data:/app_file_sharing/postgres-data
+            - ./supervisord-logs/app_file_sharing:/var/log/supervisor
