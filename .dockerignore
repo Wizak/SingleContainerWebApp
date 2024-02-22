@@ -1,3 +1,3 @@
-/app_file_sharing/frontend/node_modules
-/app_file_sharing/backend/venv
-/app_file_sharing/single-mode/supervisord-logs
+**/frontend/node_modules
+**/backend/venv
+supervisord-logs
