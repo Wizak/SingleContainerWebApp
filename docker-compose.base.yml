@@ -1,0 +1,43 @@
+version: '3.8'
+
+
+services:
+    app_file_sharing:
+        restart: always
+        tty: true
+        privileged: true
+        build: 
+            context: .
+            args:
+                - APP_DIR=/apps/file_sharing
+        volumes:
+            - ./apps/file_sharing:/app
+            - ./apps/file_sharing/postgres-data:/app/postgres-data
+            - ./supervisord-logs/app_file_sharing:/var/log/supervisor
+        networks:
+            - apps_network
+
+    app_chatgpt:
+        privileged: true
+        restart: always
+        tty: true
+        build: 
+            context: .
+            args:
+                - APP_DIR=/apps/chatgpt
+        volumes:
+            - ./apps/chatgpt:/app
+            - ./apps/chatgpt/postgres-data:/app/postgres-data
+            - ./supervisord-logs/app_chatgpt:/var/log/supervisor
+        networks:
+            - apps_network
+
+    reverse_proxy:
+        build: 
+            context: ./reverse_proxy
+        networks:
+            - apps_network
+
+networks:
+    apps_network:
+        driver: bridge

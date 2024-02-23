@@ -1,0 +1,51 @@
+version: '3.8'
+
+
+services:
+    database:
+        env_file:
+            - .env.prod
+
+    backend:
+        build:
+            target: prod
+        volumes:
+            - static_volume:/backend/staticfiles
+        env_file:
+            - .env.prod
+
+    frontend:
+        build:
+            target: prod
+        env_file:
+            - .env.prod
+        volumes:
+            - frontend-dist:/frontend:rw
+
+    nginx:
+        build:
+            target: prod
+        ports:
+            - 80:80
+            - 443:443
+        env_file:
+            - .env.prod
+        volumes:
+            - ./certbot-data/www/:/var/www/certbot/:ro
+            - ./certbot-data/conf/:/etc/nginx/ssl/:ro
+            - static_volume:/home/html/backend/staticfiles:ro
+            - frontend-client-dist:/home/html/frontend_client:rw
+            - frontend-manager-dist:/home/html/frontend_manager:rw
+
+    certbot:
+        image: certbot/certbot:latest
+        env_file:
+            - .env.prod
+        volumes:
+        - ./certbot-data/www/:/var/www/certbot/:rw
+        - ./certbot-data/conf/:/etc/letsencrypt/:rw
+
+
+volumes:
+    static_volume:
+    frontend-dist:
