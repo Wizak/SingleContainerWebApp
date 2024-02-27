@@ -29,69 +29,6 @@ function docker_compose() {
         $@
 }
 
-# function exec() {
-#     docker_compose exec $@;
-# }
-
-# function db() {
-#     function init() {
-#         function superuser() {
-#             exec backend python manage.py createsuperuser $@
-#         }
-
-#         function manager() {
-#             exec backend python manage.py createmanager $@
-#         }
-
-#         commands=(superuser manager)
-#         if [[ $# -gt 0 ]] && [[ "${commands[@]}" =~ "$1" ]]; then
-#             $@;
-#         else
-#             show_commands "db init" "$commands"
-#         fi
-#     }
-
-#     # You can migrate to the specific migration version by commands:
-#     # show_migrations [app_name]
-#     # then copy number of migration that you need and run:
-#     # migrate [ app_name ] [migration_number]
-
-#     function show_migrations() {
-#         exec backend python manage.py showmigrations $@
-#     }
-
-#     function migrate() {
-#         exec backend python manage.py migrate $@
-#     }
-
-#     function commit() {
-#         exec backend python manage.py makemigrations $@
-#     }
-
-#     commands=(downgrade show_migrations migrate commit init)
-#     if [[ $# -gt 0 ]] && [[ "${commands[@]}" =~ "$1" ]]; then
-#         $@;
-#     else
-#         show_commands db "$commands"
-#     fi
-# }
-
-# function collect_backend_static() {
-#     exec backend python manage.py collectstatic $@
-# }
-
-# # execute this command without 'sudo' when run script
-# function create_app() {
-#     exec backend python manage.py startapp $@
-#     sudo chown -R $USER:$USER ./backend/$@
-# }
-
-# function ash() {
-#     if [[ $# -gt 0 ]]; then
-#         exec $1 ash;
-#     fi
-# }
-
 function logs() {
     docker_compose logs --follow $@
 }
